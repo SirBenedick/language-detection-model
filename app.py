@@ -1,7 +1,8 @@
 import streamlit as st
 import tensorflow as tf
+import pickle
 from keras import layers
-
+import numpy as np
 
 @st.cache
 def load_model(path: str):
@@ -9,25 +10,15 @@ def load_model(path: str):
     return saved_model
 
 
-# Pickle the config and weights
-pickle.dump({'config': vectorizer.get_config(),
-             'weights': vectorizer.get_weights()}
-            , open("tv_layer.pkl", "wb"))
-
-@st.cache
 def load_vectorizer(path: str):
-    from_disk = pickle.load(open(path, "rb"))
-    new_v = TextVectorization.from_config(from_disk['config'])
-    # You have to call `adapt` with some dummy data (BUG in Keras)
-    new_v.adapt(tf.data.Dataset.from_tensor_slices(["xyz"]))
-    new_v.set_weights(from_disk['weights'])
-    return new_v
+    loaded_model = tf.keras.models.load_model(path)
+    loaded_vectorizer = loaded_model.layers[0]
+    return loaded_vectorizer
 
 
 def softmax(x):
     """Compute softmax values for each sets of scores in x."""
     return np.exp(x) / np.sum(np.exp(x), axis=0)
-
 
 def _detect_language(model, vectorizer, text: str):
     '''
@@ -36,17 +27,22 @@ def _detect_language(model, vectorizer, text: str):
     max_features = 10000 # top 10K most frequent words
     sequence_length = 50 # We defined it in the previous data exploration section
 
-    vectorized = vectorizer(text)
+    vectorized = vectorizer([text])
+    print(text, vectorized)
 
     logits = model.predict(vectorized)
-    probits = softmax(logits)
-    idx_predictions = np.argmax(probits, axis=1)
+    lang_index = np.argmax(logits, axis=1)[0]
+    print(lang_index)
     
-    lang = le.inverse_transform(idx_predictions)[0]
+    lang = ["de", "en", "es"][lang_index]
+    print(lang)
+    st.write("Language is %s" % lang)
+
 
 
 if __name__ == "__main__":
     language_model = load_model("models/simple_mlp_novectorize.h5")
+    vectorizer = load_vectorizer("vectorizer")
     
     with st.sidebar:
         """
@@ -65,6 +61,7 @@ if __name__ == "__main__":
         on_click=_detect_language,
         args=(
             language_model,
+            vectorizer,
             text_input,
         ),
     )
