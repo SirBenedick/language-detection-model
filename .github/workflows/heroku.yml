@@ -20,10 +20,10 @@ jobs:
               BOT_READER_TOKEN
               BOT_SENDER_TOKEN
               CHANNEL_ID
-            env:
-              BOT_READER_TOKEN: ${{ secrets.BOT_READER_TOKEN }}
-              BOT_SENDER_TOKEN: ${{ secrets.BOT_SENDER_TOKEN }}
-              CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          env:
+            BOT_READER_TOKEN: ${{ secrets.BOT_READER_TOKEN }}
+            BOT_SENDER_TOKEN: ${{ secrets.BOT_SENDER_TOKEN }}
+            CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
 
   build_frontend:
     runs-on: ubuntu-latest
