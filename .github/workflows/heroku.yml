@@ -15,7 +15,7 @@ jobs:
             heroku_app_name: ${{ secrets.HEROKU_APP_NAME }} 
             heroku_email: ${{ secrets.HEROKU_EMAIL }} 
             usedocker: true
-            docker_heroku_process_type: "worker"
+            docker_heroku_process_type: "web"
             appdir: "api"
             docker_build_args: |
               BOT_READER_TOKEN
