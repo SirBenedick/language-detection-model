@@ -18,13 +18,13 @@ jobs:
             docker_heroku_process_type: "web"
             appdir: "api"
             docker_build_args: |
-              BOT_READER_TOKEN
-              BOT_SENDER_TOKEN
-              CHANNEL_ID
+              BOT_READER_TOKEN_ARG
+              BOT_SENDER_TOKEN_ARG
+              CHANNEL_ID_ARG
           env:
-            BOT_READER_TOKEN: ${{ secrets.BOT_READER_TOKEN }}
-            BOT_SENDER_TOKEN: ${{ secrets.BOT_SENDER_TOKEN }}
-            CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+            BOT_READER_TOKEN_ARG: ${{ secrets.BOT_READER_TOKEN }}
+            BOT_SENDER_TOKEN_ARG: ${{ secrets.BOT_SENDER_TOKEN }}
+            CHANNEL_ID_ARG: ${{ secrets.CHANNEL_ID }}
 
   build_frontend:
     runs-on: ubuntu-latest
