@@ -2,7 +2,7 @@ import streamlit as st
 from language_detection.lang_detector import LanguageDetector
 
 if __name__ == "__main__":
-    detector = LanguageDetector("models/simple_mlp_novectorize.h5", "vectorizer")
+    detector = LanguageDetector("data/trained_models/simple_mlp_novectorize.h5", "data/trained_models/vectorizer")
     
     with st.sidebar:
         """
