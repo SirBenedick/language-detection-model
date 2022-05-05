@@ -20,8 +20,9 @@ if __name__ == "__main__":
         return text_input
 
     def detect_language():
-        user_text = get_text_input_value()
-        language = detector.detect_language(text_input)
+        user_input = str(text_input)
+        language = detector.detect_language(user_input)
+        st.write("Input text: %s" % user_input)
         st.write("Detected language is %s" % language)
 
 
