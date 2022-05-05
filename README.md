@@ -19,7 +19,7 @@ The API has three exposed endpoints:
 
 **/add** Lets you add a new entry to the CSV storage, and requires two paramters, "text" and "label":
 
-`http:.../api?text=Jonas%20is%20nice&label=english`
+`http:.../add?text=Jonas%20is%20nice&label=english`
 
 **/view** displayes the content of the data.
 
