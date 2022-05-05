@@ -1,9 +1,14 @@
 from flask import request, send_file, Flask
-import storage
+from TelegramStorage import TelegramStorage
 import os
-app = Flask(__name__)
+BOT_SENDER_TOKEN = os.environ['BOT_SENDER_TOKEN']
+BOT_READER_TOKEN = os.environ['BOT_READER_TOKEN']
+CHANNEL_ID = os.environ['CHANNEL_ID']
 
+app = Flask(__name__)
 app.config["DEBUG"] = True
+
+telage = TelegramStorage(CHANNEL_ID, BOT_READER_TOKEN, BOT_SENDER_TOKEN)
 
 
 @app.route('/', methods=['GET'])
@@ -24,19 +29,19 @@ def update_storage():
     else:
         return "Error: No label field provided. Please specify an label (on of the following ['english', 'german', 'spanish'])."
 
-    result = storage.updateCSV(text, label)
+    result = telage.addEntry([text, label])
     return f"<h1>API – {result}</h1>"
 
 # # A route to return all of the available entries of the csv.
 @app.route('/view', methods=['GET'])
 def return_csv_content():
-    return_content = storage.getCSVContent()
+    return_content = telage.getCSVContent()
     return return_content
 
 # # A route to download the csv
 @app.route('/download')
 def post():
-    csv_file_name = storage.getCSVFileName()
+    csv_file_name = telage.getCSVFileName()
     return send_file(csv_file_name, as_attachment=True, download_name=csv_file_name)
 
 
