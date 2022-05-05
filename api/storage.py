@@ -1,18 +1,18 @@
 import telegram
 import csv
-import os 
+import os
 BOT_SENDER_TOKEN = os.environ['BOT_SENDER_TOKEN']
 BOT_READER_TOKEN = os.environ['BOT_READER_TOKEN']
 CHANNEL_ID = os.environ['CHANNEL_ID']
 
 
-def getLatestFile(bot_reader):
+def getLatestFileFromChannelMessages(bot_reader):
     updates = bot_reader.get_updates()
     update = updates[-1]
     return update.channel_post.document
 
 
-def downloadLatestCSV(file, csv_file_name):
+def downloadLatestCSVandStoreLocally(file, csv_file_name):
     # TODO: check if last meswsage has a document
     newFile = bot_reader.get_file(file.file_id)
     newFile.download(custom_path=csv_file_name)
@@ -42,9 +42,28 @@ csv_file_name = "storage.csv"
 bot_reader = telegram.Bot(token=BOT_SENDER_TOKEN)
 bot_sender = telegram.Bot(token=BOT_READER_TOKEN)
 
+
 def updateCSV(text, label):
-    file = getLatestFile(bot_reader=bot_reader)
-    downloadLatestCSV(file, csv_file_name)
-    appendMessageToCSV(text, label, csv_file_name)
-    sendUpdatedCSVToChannel(csv_file_name, bot_sender, channel_id)
-    return "True"
+    try:
+        file = getLatestFileFromChannelMessages(bot_reader=bot_reader)
+        downloadLatestCSVandStoreLocally(file, csv_file_name)
+        appendMessageToCSV(text, label, csv_file_name)
+        sendUpdatedCSVToChannel(csv_file_name, bot_sender, channel_id)
+        return "True"
+    except:
+        return "False"
+
+
+def getCSVContent():
+    return_content = ""
+    with open(csv_file_name) as csvFile:
+        CSVdata = csv.reader(csvFile, delimiter=',')
+        for row in CSVdata: 
+            return_content += ', '.join(row) + '<br>'
+        csvFile.close() 
+
+    return return_content
+
+
+def getCSVFileName():
+    return csv_file_name
