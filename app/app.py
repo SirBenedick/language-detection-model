@@ -47,7 +47,7 @@ if __name__ == "__main__":
     feedback_button = st.button("Send Feedback")
 
     if feedback_button:
-        text = str(input_section_text)
+        text = st.session_state.user_input
         label = str(feedback_language)
         if bool(text) and bool(label):
             if label == "English":
