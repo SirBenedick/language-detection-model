@@ -14,19 +14,19 @@ class TelegramStorage:
         self.bot_sender = telegram.Bot(token=BOT_READER_TOKEN)
 
         # on initiation download latest CSV and store locally
-        file = self._getLatestDocumentFromChannelMessages()
-        self._downloadLatestCSVandStoreLocally(file)
+        self._downloadLatestCSVandStoreLocally()
 
     def addEntry(self, newRow: List):
         try:
             self._appendMessageToCSV(newRow)
-            self._sendUpdatedCSVToChannel()
+            self._sendLocalCSVToChannel()
             return True
         except Exception as e:
             print(e)
             return False
 
     def getCSVContent(self):
+        # TODO: check if file exists, should exist cause of the initialization
         return_content = ""
         with open(self.csv_file_name) as csvFile:
             CSVdata = csv.reader(csvFile, delimiter=',')
@@ -51,7 +51,8 @@ class TelegramStorage:
                     break
         return last_sent_document
 
-    def _downloadLatestCSVandStoreLocally(self, file):
+    def _downloadLatestCSVandStoreLocally(self):
+        file = self._getLatestDocumentFromChannelMessages()
         newFile = self.bot_reader.get_file(file["file_id"])
         newFile.download(custom_path=self.csv_file_name)
 
@@ -61,6 +62,6 @@ class TelegramStorage:
             writer_object.writerow(newRow)
             f_object.close()
 
-    def _sendUpdatedCSVToChannel(self):
+    def _sendLocalCSVToChannel(self):
         self.bot_sender.send_document(
             chat_id=self.channel_id, document=open(self.csv_file_name, 'rb'))
