@@ -29,7 +29,7 @@ def update_storage():
     else:
         return "Error: No label field provided. Please specify an label (on of the following ['english', 'german', 'spanish'])."
 
-    result = telage.addEntry([text, label])
+    result = telage.addEntry([label, text])
     return f"<h1>API – {result}</h1>"
 
 # # A route to return all of the available entries of the csv.
