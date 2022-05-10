@@ -1,5 +1,5 @@
 import streamlit as st
-from language_detection.lang_detector import LanguageDetector
+from language_detection.lang_detector import LanguageDetector, Language
 import requests
 API = "https://language-detection-api-v2.herokuapp.com"
 # wake up the API deployment
@@ -31,7 +31,7 @@ if __name__ == "__main__":
         st.session_state.user_input = str(input_section_text)
         st.session_state.detected_language = detector.detect_language(
             st.session_state.user_input)
-
+    
     ## Results section
     user_input = str(input_section_text)
     detection_result_input = st.markdown(
@@ -40,9 +40,19 @@ if __name__ == "__main__":
         f'The detected language is: **{st.session_state.detected_language if st.session_state.detected_language else "-"}**')
 
     ## Feedback section
+    def getIndexForLanguage():
+        if(st.session_state.detected_language == Language.ENGLISH):
+            return 0
+        elif(st.session_state.detected_language == Language.GERMAN):
+            return 1
+        elif(st.session_state.detected_language == Language.SPANISH):
+            return 2
+        else:
+            return 0
+
     feedback_headline = st.markdown('## Please provide feedback')
     feedback_language = st.radio(
-        f'What language was "{st.session_state.user_input if st.session_state.user_input else "-"}"?', ('English', 'German', 'Spanish'))
+        f'What language was "{st.session_state.user_input if st.session_state.user_input else "-"}"?', ('English', 'German', 'Spanish'), index=getIndexForLanguage())
 
     feedback_button = st.button("Send Feedback")
 
