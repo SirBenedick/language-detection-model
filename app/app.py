@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
             r = requests.get(f"{API}/add?text={text}&label={label}")
             if r.status_code == 200:
-                st.write("Successfully sent fedback. Thank you!")
+                st.write("Successfully sent feedback. Thank you!")
             else:
                 st.write("Something failed")
         else:
