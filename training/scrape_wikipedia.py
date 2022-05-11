@@ -2,13 +2,20 @@ import argparse
 import random
 from datetime import datetime
 from typing import List
+import enum
 
 import pandas
 import requests
 from tqdm import tqdm
 from bs4 import BeautifulSoup
 
-from app.language_detection.lang_detector import Language
+class Language(enum.Enum):
+    SPANISH = "es"
+    ENGLISH = "en"
+    GERMAN = "de"
+
+    def __str__(self):
+        return self.value
 
 
 PAGES = {
@@ -32,7 +39,7 @@ def main():
     parser.add_argument(
         "--output",
         "--o",
-        default="training/data/wiki_scraped_%s.csv"
+        default="data/wiki_scraped_%s.csv"
         % datetime.now().strftime("%Y-%m-%d.%H:%M:%S"),
     )
     sentences_df = pandas.DataFrame(columns=["labels", "text"])
