@@ -26,8 +26,10 @@ def update_storage():
 
     if 'label' in request.args:
         label = str(request.args['label'])
+        if(label not in ['en', 'de', 'es']):
+            return "Error: No label field provided. Please specify an label (on of the following ['en', 'de', 'es'])."
     else:
-        return "Error: No label field provided. Please specify an label (on of the following ['english', 'german', 'spanish'])."
+        return "Error: No label field provided. Please specify an label (on of the following ['en', 'de', 'es'])."
 
     result = telage.addEntry([label, text])
     return f"<h1>API – {result}</h1>"
