@@ -7,7 +7,7 @@ A simple web app, which classifies user input into english, german or spanish. T
 You can try it out here: [language-detection-model-v2](https://language-detection-model-v2.herokuapp.com)
 
 
-###### Initial repository: https://gitlab.com/smba/
+###### Initial repository: https://gitlab.com/smba/language-detection-model
 
 
 ## Overview
