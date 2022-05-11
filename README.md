@@ -72,4 +72,4 @@ docker run -p 5055:5055 -d --env-file=env ldm-api
 ## Deployment
 A github action deploys the api and app to heroku.
 
-By running the _train_test_deploy.sh_ the current user feedback will be fetched, added to the training/test/validation data and the model retrained. After the training the model will be pushed to the main branch, which will trigger the github action and deploy the newly trained model to heroku.
+By running the train_and_push.sh_ the current user feedback will be fetched, added to the training/test/validation data and the model retrained. After the training the model will be pushed to the main branch, which will trigger the github action and deploy the newly trained model to heroku.
