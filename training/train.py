@@ -45,9 +45,9 @@ def load_dataset(path: str):
     df = pd.concat([load_csv(file) for file in csv_files], axis=0, ignore_index=True)
     df = df.loc[df.labels.isin(lang_list)]
     print(df.columns)
-    train_test, val_df = train_test_split(df, test_size=0.2, stratify=df["labels"])
+    train_test, val_df = train_test_split(df, test_size=0.1)
     train_df, test_df = train_test_split(
-        train_test, test_size=0.25, stratify=train_test["labels"]
+        train_test, test_size=0.1
     )
 
     return train_df, val_df, test_df
@@ -101,7 +101,7 @@ raw_test_ds = tf.data.Dataset.from_tensor_slices(
     (test_df["text"].to_list(), test_labels)
 )
 
-max_features = 10000  # top 10K most frequent words
+max_features = 100000  # top 10K most frequent words
 sequence_length = 50  # We defined it in the previous data exploration section
 
 vectorize_layer = layers.TextVectorization(
