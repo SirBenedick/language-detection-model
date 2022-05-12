@@ -52,7 +52,7 @@ def main():
                 {"labels": language.value, "text": sentence}, ignore_index=True
             )
     print("Store scraped csv to %s" % args.output)
-    sentences_df.to_csv(args.output)
+    sentences_df.to_csv(args.output, index=False)
 
 
 if __name__ == "__main__":
