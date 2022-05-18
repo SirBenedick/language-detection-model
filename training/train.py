@@ -25,6 +25,7 @@ def load_csv(file: str) -> pd.DataFrame:
     df.rename(
         {col: col.lower().strip() for col in df.columns}, inplace=True, axis="columns"
     )
+    df = df.loc[df.labels.isin(lang_list)]
     return df
 
 
@@ -36,19 +37,19 @@ def load_dataset(path: str):
         raise ValueError("%s must be a directory" % path)
 
     csv_files = [
-        os.path.join(path, file)
-        for file in os.listdir(path)
-        if file.lower().endswith(".csv")
+        os.path.join(path, f)
+        for f in os.listdir(path)
+        if f.lower().endswith(".csv") and f != "valid.csv"
     ]
     print("load", csv_files)
 
     df = pd.concat([load_csv(file) for file in csv_files], axis=0, ignore_index=True)
-    df = df.loc[df.labels.isin(lang_list)]
     print(df.columns)
-    train_test, val_df = train_test_split(df, test_size=0.1)
+    # train_test, val_df = train_test_split(df, test_size=0.1)
     train_df, test_df = train_test_split(
-        train_test, test_size=0.1
+        df, test_size=0.1
     )
+    val_df = load_csv(os.path.join(path,"valid.csv"))
 
     return train_df, val_df, test_df
 
@@ -64,7 +65,7 @@ parser.add_argument(
 parser.add_argument(
     "--input", default="data", type=str, help="Input directory with training csv files."
 )
-
+parser.add_argument("--n-features", default=100_000, help="Number of features (=max num of words)", type=int)
 args = parser.parse_args()
 
 if os.path.exists(args.output) and not os.path.isdir(args.output):
@@ -101,7 +102,7 @@ raw_test_ds = tf.data.Dataset.from_tensor_slices(
     (test_df["text"].to_list(), test_labels)
 )
 
-max_features = 100000  # top 10K most frequent words
+max_features = args.n_features  # top 10K most frequent words
 sequence_length = 50  # We defined it in the previous data exploration section
 
 vectorize_layer = layers.TextVectorization(
