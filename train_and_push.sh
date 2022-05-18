@@ -16,7 +16,7 @@ git pull
 cd "$(dirname -- "$(readlink -f "${BASH_SOURCE}")")"
 
 curl -o training/data/feedback.csv https://language-detection-api-v2.herokuapp.com/download
-python training/train.py --input training/data --epochs 10 --output app/data/trained_models/
+python training/train.py --input training/data --output app/data/trained_models/
 git add app/data/trained_models
 git commit -m "Update model $(date -u +'%Y-%m-%dT%H:%M')"
 git push
