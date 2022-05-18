@@ -6,7 +6,9 @@ from keras.layers import TextVectorization
 from sklearn import preprocessing
 import tensorflow as tf
 import argparse
+import json
 
+from tensorflow.python.keras.callbacks import EarlyStopping
 from sklearn.model_selection import train_test_split
 
 
@@ -39,23 +41,21 @@ def load_dataset(path: str):
     csv_files = [
         os.path.join(path, f)
         for f in os.listdir(path)
-        if f.lower().endswith(".csv") and f != "valid.csv"
+        if f.lower().endswith(".csv") and f != "test.csv"
     ]
     print("load", csv_files)
 
     df = pd.concat([load_csv(file) for file in csv_files], axis=0, ignore_index=True)
     print(df.columns)
     # train_test, val_df = train_test_split(df, test_size=0.1)
-    train_df, test_df = train_test_split(
-        df, test_size=0.1
-    )
-    val_df = load_csv(os.path.join(path,"valid.csv"))
+    train_df, val_df = train_test_split(df, test_size=0.2)
+    test_df = load_csv(os.path.join(path, "test.csv"))
 
-    return train_df, val_df, test_df
+    return train_df, val_df, test_df, csv_files
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--epochs", default=10, type=int, help="Number of training epochs")
+parser.add_argument("--epochs", default=30, type=int, help="Number of training epochs")
 parser.add_argument(
     "--output",
     required=True,
@@ -65,7 +65,12 @@ parser.add_argument(
 parser.add_argument(
     "--input", default="data", type=str, help="Input directory with training csv files."
 )
-parser.add_argument("--n-features", default=100_000, help="Number of features (=max num of words)", type=int)
+parser.add_argument(
+    "--n-features",
+    default=100_000,
+    help="Number of features (=max num of words)",
+    type=int,
+)
 args = parser.parse_args()
 
 if os.path.exists(args.output) and not os.path.isdir(args.output):
@@ -74,10 +79,11 @@ if os.path.exists(args.output) and not os.path.isdir(args.output):
 if not os.path.exists(args.output):
     os.mkdir(args.output)
 
+
 # Select only "en", "es" and "de"
 lang_list = ["es", "en", "de"]
 
-train_df, val_df, test_df = load_dataset(args.input)
+train_df, val_df, test_df, csv_files = load_dataset(args.input)
 
 le = preprocessing.LabelEncoder()
 le.fit(lang_list)
@@ -102,7 +108,7 @@ raw_test_ds = tf.data.Dataset.from_tensor_slices(
     (test_df["text"].to_list(), test_labels)
 )
 
-max_features = args.n_features  # top 10K most frequent words
+max_features = args.n_features
 sequence_length = 50  # We defined it in the previous data exploration section
 
 vectorize_layer = layers.TextVectorization(
@@ -158,12 +164,31 @@ model.compile(
     metrics=["accuracy"],
 )
 
-history = model.fit(train_ds, validation_data=val_ds, epochs=args.epochs)
-
+history = model.fit(
+    train_ds,
+    validation_data=val_ds,
+    epochs=args.epochs,
+    callbacks=[
+        EarlyStopping(
+            patience=2,
+            monitor="val_loss",
+            mode="min",
+            restore_best_weights=True,
+        )
+    ],
+)
 loss, accuracy = model.evaluate(test_ds)
 
-print("Loss: ", loss)
-print("Accuracy: ", accuracy)
+model_report = {
+    "loss": loss,
+    "accuracy": accuracy,
+    "params": {"epochs": args.epochs, "features": args.n_features},
+    "train_val_files": csv_files,
+}
+
+print(model_report)
+
 
 model.save(os.path.join(args.output, "simple_mlp_novectorize.h5"))
 store_text_vectorizer(vectorize_layer, os.path.join(args.output, "vectorizer"))
+json.dump(model_report, open(os.path.join(args.output, "report.json"), "w"))
