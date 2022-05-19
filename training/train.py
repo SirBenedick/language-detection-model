@@ -11,6 +11,7 @@ import json
 from tensorflow.python.keras.callbacks import EarlyStopping
 from sklearn.model_selection import train_test_split
 
+lang_list = ["es", "en", "de"]
 
 def store_text_vectorizer(vectorizer: TextVectorization, file_path: str):
     # Create model.
@@ -32,7 +33,6 @@ def load_csv(file: str) -> pd.DataFrame:
 
 
 def load_dataset(path: str):
-    lang_list = ["es", "en", "de"]
     if not os.path.exists(path):
         raise FileNotFoundError("Input directory %s does not exists" % path)
     if not os.path.isdir(path):
@@ -79,10 +79,6 @@ if os.path.exists(args.output) and not os.path.isdir(args.output):
 if not os.path.exists(args.output):
     os.mkdir(args.output)
 
-
-# Select only "en", "es" and "de"
-lang_list = ["es", "en", "de"]
-
 train_df, val_df, test_df, csv_files = load_dataset(args.input)
 
 le = preprocessing.LabelEncoder()
@@ -109,7 +105,7 @@ raw_test_ds = tf.data.Dataset.from_tensor_slices(
 )
 
 max_features = args.n_features
-sequence_length = 50  # We defined it in the previous data exploration section
+sequence_length = 50
 
 vectorize_layer = layers.TextVectorization(
     standardize="lower_and_strip_punctuation",
@@ -187,7 +183,6 @@ model_report = {
 }
 
 print(model_report)
-
 
 model.save(os.path.join(args.output, "simple_mlp_novectorize.h5"))
 store_text_vectorizer(vectorize_layer, os.path.join(args.output, "vectorizer"))
