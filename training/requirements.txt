@@ -1,0 +1,10 @@
+requests>=2.27.1
+beautifulsoup4>=4.11.1
+keras
+tensorflow
+scikit-learn
+tensorflow
+pandas
+numpy
+scikit-learn
+tqdm

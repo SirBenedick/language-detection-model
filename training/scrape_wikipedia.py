@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import os
 import random
@@ -48,15 +50,15 @@ def main():
         "--o",
         default=default_output_path,
     )
-    sentences_df = pandas.DataFrame(columns=["labels", "text"])
     args = parser.parse_args()
+
+    rows = []
     for i in tqdm(range(args.pages)):
         language = random.sample(PAGES.keys(), 1)[0]
         sentences = scrape_page(PAGES[language])
         for sentence in sentences:
-            sentences_df = sentences_df.append(
-                {"labels": language.value, "text": sentence}, ignore_index=True
-            )
+            rows.append({"labels": language.value, "text": sentence})
+    sentences_df = pandas.DataFrame(rows)
     print("Store scraped csv to %s" % args.output)
     sentences_df.to_csv(args.output, index=False)
 

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 
 import pandas as pd
@@ -58,9 +60,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--epochs", default=30, type=int, help="Number of training epochs")
 parser.add_argument(
     "--output",
-    required=True,
+    default="trained_models",
     type=str,
-    help="Output directory for the traied model files",
+    help="Output directory for the trained model files",
 )
 parser.add_argument(
     "--input", default="data", type=str, help="Input directory with training csv files."
