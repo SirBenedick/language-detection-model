@@ -12,7 +12,7 @@ if [[ -n $(git diff --name-only) ]]; then
 fi
 
 
-git pull
+# git pull
 cd "$(dirname -- "$(readlink -f "${BASH_SOURCE}")")"
 cd ..
 
@@ -26,4 +26,4 @@ git commit -m "Update model $(date -u +'%Y-%m-%dT%H:%M')\n \
 ``` \
 $REPORT_DIFF \
 ```"
-git push
+#git push
