@@ -2,9 +2,11 @@ FROM python:3.9-slim
 
 COPY requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+RUN apt-get update && apt-get install -y git
 
 RUN mkdir /training
 ADD *.py /training/
+ADD train_and_push.sh /training/
 
 RUN chmod +x training/*.py
 
