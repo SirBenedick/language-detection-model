@@ -72,4 +72,26 @@ docker run -p 5055:5055 -d --env-file=env ldm-api
 ## Deployment
 A github action deploys the api and app to heroku.
 
-By running the train_and_push.sh_ the current user feedback will be fetched, added to the training/test/validation data and the model retrained. After the training the model will be pushed to the main branch, which will trigger the github action and deploy the newly trained model to heroku.
+For the training and scraping, a docker image can be built with:
+
+```sh
+docker build -t ldm-v2-training ./training
+```
+
+### Scraping
+
+New training data can be scraped from wikipedia with:
+
+```sh
+docker run -v $(pwd)/training/data:/training/data -it ldm-v2-training /training/scrape_wikipedia.py
+```
+
+### Training
+
+By running the training pipeline the current user feedback will be fetched, added to the training/test/validation data and the model retrained. After the training, the model will be pushed to the main branch, which will trigger the github action and deploy the newly trained model to heroku. The training pipeline can be run from the git repository with:
+
+```sh
+docker run -v $(pwd):/repository -v ~/.gitconfig:/etc/gitconfig --workdir /repository -it ldm-v2-training training/train_and_commit.sh
+```
+
+(note that this needs access to your git config in order to pull recent changes, and commit and push the new model)
