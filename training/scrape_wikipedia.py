@@ -1,4 +1,5 @@
 import argparse
+import os
 import random
 from datetime import datetime
 from typing import List
@@ -8,6 +9,7 @@ import pandas
 import requests
 from tqdm import tqdm
 from bs4 import BeautifulSoup
+
 
 class Language(enum.Enum):
     SPANISH = "es"
@@ -24,8 +26,7 @@ PAGES = {
     Language.SPANISH: "https://es.wikipedia.org/wiki/Especial:Aleatoria",
 }
 
-
-def scape_page(url, min_length=20) -> List[str]:
+def scrape_page(url, min_length=20) -> List[str]:
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
 
@@ -34,19 +35,24 @@ def scape_page(url, min_length=20) -> List[str]:
 
 
 def main():
+    default_output_path = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        "data",
+        "wiki_scraped_%s.csv" % datetime.now().strftime("%Y-%m-%d.%H:%M:%S"),
+    )
+
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", "--pages", type=int, default=100)
     parser.add_argument(
         "--output",
         "--o",
-        default="data/wiki_scraped_%s.csv"
-        % datetime.now().strftime("%Y-%m-%d.%H:%M:%S"),
+        default=default_output_path,
     )
     sentences_df = pandas.DataFrame(columns=["labels", "text"])
     args = parser.parse_args()
     for i in tqdm(range(args.pages)):
         language = random.sample(PAGES.keys(), 1)[0]
-        sentences = scape_page(PAGES[language])
+        sentences = scrape_page(PAGES[language])
         for sentence in sentences:
             sentences_df = sentences_df.append(
                 {"labels": language.value, "text": sentence}, ignore_index=True
