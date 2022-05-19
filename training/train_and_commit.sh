@@ -2,6 +2,9 @@
 
 set -eux
 
+cd "$(dirname -- "$(readlink -f "${BASH_SOURCE}")")"
+cd ..
+
 if [[ $(git rev-parse --abbrev-ref HEAD) != "main" ]]; then
  echo "Must be on branch main. Exit"
  exit 2
@@ -11,15 +14,11 @@ if [[ -n $(git diff --name-only) ]]; then
   exit 1
 fi
 
-cd "$(dirname -- "$(readlink -f "${BASH_SOURCE}")")"
-cd ..
+git pull
 
 curl -o training/data/feedback.csv https://language-detection-api-v2.herokuapp.com/download
 python training/train.py --input training/data --output app/data/trained_models
 git add app/data/trained_models
 
 REPORT_DIFF=$(git diff app/data/trained_models/report.json)
-git commit -m "Update model $(date -u +'%Y-%m-%dT%H:%M')\n \
-``` \
-$REPORT_DIFF \
-```"
+git commit -m "Update model $(date -u +'%Y-%m-%dT%H:%M')" -m "$REPORT_DIFF"
