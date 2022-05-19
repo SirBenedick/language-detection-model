@@ -88,10 +88,10 @@ docker run -v $(pwd)/training/data:/training/data -it ldm-v2-training /training/
 
 ### Training
 
-By running the training pipeline the current user feedback will be fetched, added to the training/test/validation data and the model retrained. After the training, the model will be pushed to the main branch, which will trigger the github action and deploy the newly trained model to heroku. The training pipeline can be run from the git repository with:
+By running the training pipeline the current user feedback will be fetched, added to the training/test/validation data and the model retrained. After the training, the model will be commited to the main branch. The commit message shows a diff between the old and new model, so that the performance improvement of the new model can be observed. The new model can then be pushed manually, in which case it will trigger the github action and deploys the newly trained model to heroku. The training pipeline can be run from the git repository with:
 
 ```sh
 docker run -v $(pwd):/repository -v ~/.gitconfig:/etc/gitconfig --workdir /repository -it ldm-v2-training training/train_and_commit.sh
 ```
 
-(note that this needs access to your git config in order to pull recent changes, and commit and push the new model)
+(note that this needs access to your git config in order to commit the new model)
