@@ -11,14 +11,11 @@ if [[ -n $(git diff --name-only) ]]; then
   exit 1
 fi
 
-
-# git pull
 cd "$(dirname -- "$(readlink -f "${BASH_SOURCE}")")"
 cd ..
 
 curl -o training/data/feedback.csv https://language-detection-api-v2.herokuapp.com/download
-#docker run -v $(pwd)/training/data:/training/data -v $(pwd)/app/data/trained_models:/training/trained_models -it training ./train.py
-python training/train.py
+python training/train.py --input training/data --output app/data/trained_models
 git add app/data/trained_models
 
 REPORT_DIFF=$(git diff app/data/trained_models/report.json)
@@ -26,4 +23,3 @@ git commit -m "Update model $(date -u +'%Y-%m-%dT%H:%M')\n \
 ``` \
 $REPORT_DIFF \
 ```"
-#git push
