@@ -14,8 +14,6 @@ if [[ -n $(git diff --name-only) ]]; then
   exit 1
 fi
 
-git pull
-
 curl -o training/data/feedback.csv https://language-detection-api-v2.herokuapp.com/download
 python training/train.py --input training/data --output app/data/trained_models
 git add app/data/trained_models
