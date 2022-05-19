@@ -1,0 +1,50 @@
+labels, text
+en,Please enter sample text to detect language
+en,"One can use a bit of a hack to do this. Construct your TextVectorization object, then put it in a model. Save the model to save the vectorizer. Loading the model will reproduce the vectorizer. See the example below."
+de,"Diskussionsforum (á la Stackoverflow) für Fragen, Rückmeldung und Diskussionen mit Mehrwert für Alle.
+
+"
+es,"El magistrado interroga este lunes como testigo a la profesora que, según el empresario, le puso al habla con el primo del alcalde"
+en,"The greatest glory in living lies not in never falling, but in rising every time we fall."
+en,This is an example text.
+de,"Als Speyerer Dom wird der Kaiser- und Mariendom zu Speyer (offizielle Bezeichnung: Domkirche St. Maria und St. Stephan) bezeichnet. Er steht in der rheinland-pfälzischen Stadt Speyer und ist die Kathedralkirche der katholischen Diözese Speyer und Pfarrkirche der Dompfarrei. Er zählt zu den drei romanischen Kaiserdomen in Deutschland. Nach der teilweisen Zerstörung der Abtei Cluny während der Herrschaft Napoleons ist er die größte erhaltene romanische Kirche der Welt.[1] Er wurde 1925 von Papst Pius XI. in den Stand einer Basilica minor erhoben. Seit 1981 steht er auf der UNESCO-Liste des Weltkulturerbes, außerdem ist er ein geschütztes Kulturgut nach der Haager Konvention."
+en,The api is a flask server which receives and stores the user feedback. The feedback is stored in a CSV file and uses telegram in a creative way to store the file for free real estate storage.
+de,Hallo
+en,"should show all the local branches of your repo. The starred branch is your current branch.
+
+If you want to retrieve only the name of the branch you are on, you can do:"
+de,"Nach erfolgreichem Abschluss des Moduls Software Engineering für KI-Systeme sollten Studierende in der Lage sein:
+
+• Tradeoffs beim Entwerfen von Produktionssystemen mit KI-Komponenten zu analysieren, verschiedene Qualitätseigenschaften außer Genauigkeit, wie z.B. Operationskosten, Latenz, Updatebarkeit, Erklärbarkeit zu analysieren;
+
+• Produktionssysteme, die robust gegenüber Fehlern von KI-Komponenten sind, zu implementieren;
+
+• Fehlertolerante und skalierbare Daten-intensive Infrastrukturen zum Lermen, Ausliefern, Versionieren und Experimentieren von Modellen zu entwerfen;
+
+• Qualität der gesamten Machine-Learning Pipeline durch Testautomatisierung und anderen Qualitätssichernden Techniken, einschließlich automatisierten Checks, Data Drifts, Feedback-Schleifen, sicher zu stellen;
+
+• System zu bauen, die in Produktion getestet werden können und Deployment-Pipelines bauen, die vorsichtige Rollouts und Canary Testing ermöglichen;
+
+• Privacy, Fairness, Ethik und Moral sowie Sicherheit beim Bauen von komplexen KI-basierten Systemen zu berücksichtigen;
+
+• Effektiv im Team bestehend aus Softwaretechnikern und Data Analysten zu kommunizieren.
+
+Weiterhin werden Studierende vertraut mit neuesten Infrastrukturwerkzeugen, einschließlich Stream Processing (beispielsweise, aber nicht zwingend: mit Apache Kafka, Deployment mit Docker und Kubernetes und Testautomatisierung mit Travis und Jenkins).
+Hilfreiche Links:
+– Moodle-Kurse (LINK TBA): Materialien, Videos, Übungsaufgaben, Kontakt zu Lehrenden, Diskussionen, etc.
+– AlmaWeb (LINK TBA): Anmeldung zur Prüfung"
+de,hallo wie gehts
+de,In Leipzig kommt es am Morgen zu einem Mix aus Sonne und Wolken bei Temperaturen von 17°C. Später ist es locker bewölkt und die Temperatur erreicht 21°C. Abends ist es in Leipzig wolkig bei Werten von 16 bis zu 20°C. Nachts ist es wolkig und die Temperatur fällt auf 11°C. Böen können Geschwindigkeiten zwischen 12 und 47 km/h erreichen. 
+es,Finlandia apoya el ingreso “cuanto antes” en la OTAN pese a los  avisos de Putin
+en,"In the Trenches of Eastern Ukraine, Combat Becomes a Vicious Dance
+
+In some villages along the front, Ukrainian and Russian soldiers face off at close quarters, sometimes within eyesight of one another"
+de,hallo ich bin der Peter
+es,hola yo soy el pedro
+de,hallo ich bin der pedro
+de,Was für 1 nice App.
+en,I cannot imagine the countless opportunities this websites offers me.
+es,Esto página web es inreíble. Es mi app favorita para siempre.
+es,Hola yo soy pedro kilomedro
+en,Give me more feedback please.
+de,"Der folgende Satz ist französisch: ""Je suis un baguette"" "
