@@ -43,29 +43,29 @@ The _training pipeline_ uses the labeled data from the user, training data from 
 ### Run development locally
 ```bash
 python3 -m venv venv # python>3.8
-pip install -r requirements.txt
+source venv/bin/activate
 
-## Run api
+## Run app
 cd app
+pip install -r requirements.txt
 streamlit run app.py
 
 ## Run api
 cd api
+pip install -r requirements.txt
 python api.py
-
-## Run pipeline
-TODO: ...
-
 ```
 ### Run container locally
 ```bash
 ## Run app
+cd app
 docker build -f Dockerfile-local .  -t ldm-app 
 docker run -it -p 8501:8501 ldm-app
 
 ## Run api
+cd api
 docker image build -t ldm-api .
-# a special env file is needed with the access tokens for telegam, else it abviously won't run locally
+# a special env file is needed with the access tokens for telegam, else it obviously won't run locally
 docker run -p 5055:5055 -d --env-file=env ldm-api
 ```
 
@@ -88,7 +88,7 @@ docker run -v $(pwd)/training/data:/training/data -it ldm-v2-training /training/
 
 ### Training
 
-By running the training pipeline the current user feedback will be fetched, added to the training/test/validation data and the model retrained. After the training, the model will be commited to the main branch. The commit message shows a diff between the old and new model, so that the performance improvement of the new model can be observed. The new model can then be pushed manually, in which case it will trigger the github action and deploys the newly trained model to heroku. The training pipeline can be run from the git repository with:
+By running the training pipeline the current user feedback will be fetched, added to the training and validation data and the model retrained. After the training, the model will be commited to the main branch. The commit message shows a diff between the old and new model, so that the performance improvement of the new model can be observed. The new model can then be **pushed manually**, in which case it will trigger the github action and deploys the newly trained model to heroku. The training pipeline can be run from the root of the git repository with:
 
 ```sh
 docker run -v $(pwd):/repository -v ~/.gitconfig:/etc/gitconfig --workdir /repository -it ldm-v2-training training/train_and_commit.sh
