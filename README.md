@@ -1,4 +1,4 @@
-# language-detection-model-v2
+# Language Detection Model v2
 
 A simple web app, which classifies user input into english, german or spanish. The modell is trained a scraped data from eg. wikipedia, but also relies on the user feedback.
 
